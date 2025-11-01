@@ -21,7 +21,7 @@ jobs:
     - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y git zip unzip openjdk-17-jdk wget autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev
+        sudo apt-get install -y git zip unzip openjdk-17-jdk wget autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev cmake libffi-dev libssl-dev
     
     - name: Install Buildozer and dependencies
       run: |
@@ -37,4 +37,5 @@ jobs:
       with:
         name: word-mastermind-apk
         path: bin/*.apk
+
 
