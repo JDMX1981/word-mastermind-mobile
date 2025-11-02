@@ -31,6 +31,13 @@ jobs:
         unzip -q commandlinetools-linux-11076708_latest.zip
         mkdir -p cmdline-tools/latest
         mv cmdline-tools/* cmdline-tools/latest/ 2>/dev/null || true
+        
+        # Create tools directory structure for buildozer compatibility
+        mkdir -p tools/bin
+        ln -s ../../cmdline-tools/latest/bin/sdkmanager tools/bin/sdkmanager
+        ln -s ../../cmdline-tools/latest/bin/avdmanager tools/bin/avdmanager
+        
+        # Accept licenses and install required packages
         yes | cmdline-tools/latest/bin/sdkmanager --licenses
         cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.0"
     
