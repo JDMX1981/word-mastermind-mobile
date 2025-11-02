@@ -21,7 +21,14 @@ jobs:
     - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y git zip unzip openjdk-11-jdk wget autoconf automake libtool pkg-config zlib1g-dev libncurses5-dev cmake libffi-dev libssl-dev
+        sudo apt-get install -y git zip unzip openjdk-17-jdk wget autoconf automake libtool pkg-config zlib1g-dev libncurses5-dev cmake libffi-dev libssl-dev
+        
+    - name: Set Java 17 as default
+      run: |
+        sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+        sudo update-alternatives --set javac /usr/lib/jvm/java-17-openjdk-amd64/bin/javac
+        export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+        echo "JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64" >> $GITHUB_ENV
     
     - name: Install Buildozer and dependencies
       run: |
@@ -37,4 +44,5 @@ jobs:
       with:
         name: word-mastermind-apk
         path: bin/*.apk
+
 
