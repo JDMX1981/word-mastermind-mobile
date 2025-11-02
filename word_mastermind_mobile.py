@@ -1,7 +1,10 @@
 import random
+import json
+import os
 from kivy.app import App
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.widget import Widget
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
@@ -24,14 +27,55 @@ class WordMastermindApp(App):
         super().__init__(**kwargs)
         self.secret_word = self.generate_word()
         self.guess_count = 0
-        self.games_played = 0
-        self.games_won = 0
         self.letter_labels = []
         self.keyboard_buttons = {}
         self.keyboard_letter_states = {char: 'default' for char in ENGLISH_ALPHABET}
         
+        # Carregar estatísticas guardadas
+        self.stats_file = None
+        self.games_played = 0
+        self.games_won = 0
+        self.load_stats()
+        
     def generate_word(self):
         return random.choice(WORD_LIST)
+    
+    def get_stats_file_path(self):
+        """Retorna o caminho do ficheiro de estatísticas"""
+        if self.stats_file is None:
+            # user_data_dir é persistente entre sessões
+            data_dir = self.user_data_dir
+            if not os.path.exists(data_dir):
+                os.makedirs(data_dir)
+            self.stats_file = os.path.join(data_dir, 'stats.json')
+        return self.stats_file
+    
+    def load_stats(self):
+        """Carrega estatísticas guardadas"""
+        try:
+            stats_path = self.get_stats_file_path()
+            if os.path.exists(stats_path):
+                with open(stats_path, 'r') as f:
+                    stats = json.load(f)
+                    self.games_played = stats.get('games_played', 0)
+                    self.games_won = stats.get('games_won', 0)
+        except Exception as e:
+            print(f"Erro ao carregar estatísticas: {e}")
+            self.games_played = 0
+            self.games_won = 0
+    
+    def save_stats(self):
+        """Guarda estatísticas permanentemente"""
+        try:
+            stats_path = self.get_stats_file_path()
+            stats = {
+                'games_played': self.games_played,
+                'games_won': self.games_won
+            }
+            with open(stats_path, 'w') as f:
+                json.dump(stats, f)
+        except Exception as e:
+            print(f"Erro ao guardar estatísticas: {e}")
     
     def check_guess(self, secret_word, guess):
         feedback = [''] * 5
@@ -67,8 +111,8 @@ class WordMastermindApp(App):
         # Main layout
         main_layout = BoxLayout(orientation='vertical', padding=8, spacing=5)
         
-        # Header: Título e Regras lado a lado - MAIS ESPAÇO
-        header_layout = BoxLayout(orientation='horizontal', size_hint=(1, 0.15), spacing=15)
+        # Header: Título e Regras lado a lado - COMPACTO
+        header_layout = BoxLayout(orientation='horizontal', size_hint=(1, 0.12), spacing=15)
         
         # Left side: Title + Instructions
         left_layout = BoxLayout(orientation='vertical', size_hint=(0.4, 1), spacing=3)
@@ -109,7 +153,7 @@ class WordMastermindApp(App):
         main_layout.add_widget(header_layout)
         
         # Input field - COMPACTO
-        input_layout = BoxLayout(size_hint=(1, 0.07), spacing=5)
+        input_layout = BoxLayout(size_hint=(1, 0.06), spacing=5)
         self.guess_input = TextInput(
             hint_text='Enter word',
             multiline=False,
@@ -125,17 +169,23 @@ class WordMastermindApp(App):
         
         main_layout.add_widget(input_layout)
         
-        # Game grid (6 rows x 5 columns) - MUITO MAIOR!
-        self.grid_layout = GridLayout(cols=5, spacing=8, size_hint=(1, 0.52), padding=10)
+        # Game grid - CENTRADO E MAIOR!
+        grid_container = BoxLayout(orientation='horizontal', size_hint=(1, 0.60))
+        grid_container.add_widget(Widget(size_hint=(0.05, 1)))  # Margem esquerda
+        
+        # Grid com mais espaço entre linhas
+        self.grid_layout = BoxLayout(orientation='vertical', spacing=10, padding=10)
+        
         for i in range(6):
+            row_layout = BoxLayout(orientation='horizontal', spacing=8, size_hint=(1, None), height=80)
             row = []
             for j in range(5):
                 lbl = Label(
                     text='',
-                    font_size='36sp',
+                    font_size='40sp',
                     color=(0, 0, 0, 1),
                     size_hint=(None, None),
-                    size=(70, 70),
+                    size=(75, 75),
                     bold=True
                 )
                 # Fundo branco com borda preta (espaços vazios visíveis)
@@ -151,14 +201,17 @@ class WordMastermindApp(App):
                     instance.border.rectangle = (instance.x, instance.y, instance.width, instance.height)
                 
                 lbl.bind(pos=update_graphics, size=update_graphics)
-                self.grid_layout.add_widget(lbl)
+                row_layout.add_widget(lbl)
                 row.append(lbl)
+            self.grid_layout.add_widget(row_layout)
             self.letter_labels.append(row)
         
-        main_layout.add_widget(self.grid_layout)
+        grid_container.add_widget(self.grid_layout)
+        grid_container.add_widget(Widget(size_hint=(0.05, 1)))  # Margem direita
+        main_layout.add_widget(grid_container)
         
         # Keyboard - COMPACTO
-        keyboard_layout = BoxLayout(orientation='vertical', size_hint=(1, 0.14), spacing=2)
+        keyboard_layout = BoxLayout(orientation='vertical', size_hint=(1, 0.12), spacing=2)
         
         key_rows = [
             ENGLISH_ALPHABET[0:9],
@@ -197,7 +250,7 @@ class WordMastermindApp(App):
         reset_btn = Button(
             text='New Game',
             font_size='18sp',
-            size_hint=(1, 0.06),
+            size_hint=(1, 0.05),
             background_color=(0.2, 0.6, 1, 1),
             color=(1, 1, 1, 1),
             bold=True
@@ -315,6 +368,9 @@ class WordMastermindApp(App):
         popup.open()
     
     def show_stats_popup(self, won):
+        # Guardar estatísticas permanentemente
+        self.save_stats()
+        
         games_lost = self.games_played - self.games_won
         win_percentage = (self.games_won / self.games_played) * 100 if self.games_played > 0 else 0
         
