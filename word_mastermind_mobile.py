@@ -169,26 +169,26 @@ class WordMastermindApp(App):
         
         main_layout.add_widget(input_layout)
         
-        # Espaço em cima do grid para centrar verticalmente
-        main_layout.add_widget(Widget(size_hint=(1, 0.05)))
+        # Espaço em cima - equilibrado
+        main_layout.add_widget(Widget(size_hint=(1, 0.12)))
         
         # Game grid - ENORME E CENTRADO!
-        grid_container = BoxLayout(orientation='horizontal', size_hint=(1, 0.63))
-        grid_container.add_widget(Widget(size_hint=(0.5, 1)))  # Margem esquerda
+        grid_container = BoxLayout(orientation='horizontal', size_hint=(1, 0.60))
+        grid_container.add_widget(Widget(size_hint=(0.08, 1)))  # Margem esquerda PEQUENA
         
         # Grid ENORME
         self.grid_layout = BoxLayout(orientation='vertical', spacing=18, padding=5)
         
         for i in range(6):
-            row_layout = BoxLayout(orientation='horizontal', spacing=12, size_hint=(1, None), height=120)
+            row_layout = BoxLayout(orientation='horizontal', spacing=12, size_hint=(1, None), height=130)
             row = []
             for j in range(5):
                 lbl = Label(
                     text='',
-                    font_size='56sp',
+                    font_size='60sp',
                     color=(0, 0, 0, 1),
                     size_hint=(None, None),
-                    size=(115, 115),
+                    size=(125, 125),
                     bold=True
                 )
                 # Fundo branco com borda preta (espaços vazios visíveis)
@@ -210,11 +210,11 @@ class WordMastermindApp(App):
             self.letter_labels.append(row)
         
         grid_container.add_widget(self.grid_layout)
-        grid_container.add_widget(Widget(size_hint=(0.5, 1)))  # Margem direita GRANDE
+        grid_container.add_widget(Widget(size_hint=(0.08, 1)))  # Margem direita PEQUENA
         main_layout.add_widget(grid_container)
         
-        # Espaço em baixo do grid para centrar verticalmente
-        main_layout.add_widget(Widget(size_hint=(1, 0.05)))
+        # Espaço em baixo - equilibrado
+        main_layout.add_widget(Widget(size_hint=(1, 0.11)))
         
         # Keyboard - COMPACTO
         keyboard_layout = BoxLayout(orientation='vertical', size_hint=(1, 0.10), spacing=2)
