@@ -112,7 +112,7 @@ class WordMastermindApp(App):
         main_layout = BoxLayout(orientation='vertical', padding=8, spacing=5)
         
         # Header: Título e Regras lado a lado - COMPACTO
-        header_layout = BoxLayout(orientation='horizontal', size_hint=(1, 0.12), spacing=15)
+        header_layout = BoxLayout(orientation='horizontal', size_hint=(1, 0.10), spacing=15)
         
         # Left side: Title + Instructions
         left_layout = BoxLayout(orientation='vertical', size_hint=(0.4, 1), spacing=3)
@@ -153,7 +153,7 @@ class WordMastermindApp(App):
         main_layout.add_widget(header_layout)
         
         # Input field - COMPACTO
-        input_layout = BoxLayout(size_hint=(1, 0.06), spacing=5)
+        input_layout = BoxLayout(size_hint=(1, 0.05), spacing=5)
         self.guess_input = TextInput(
             hint_text='Enter word',
             multiline=False,
@@ -169,23 +169,23 @@ class WordMastermindApp(App):
         
         main_layout.add_widget(input_layout)
         
-        # Game grid - CENTRADO E MAIOR!
-        grid_container = BoxLayout(orientation='horizontal', size_hint=(1, 0.60))
-        grid_container.add_widget(Widget(size_hint=(0.05, 1)))  # Margem esquerda
+        # Game grid - ENORME E CENTRADO!
+        grid_container = BoxLayout(orientation='horizontal', size_hint=(1, 0.68))
+        grid_container.add_widget(Widget(size_hint=(0.5, 1)))  # Margem esquerda
         
-        # Grid com mais espaço entre linhas
-        self.grid_layout = BoxLayout(orientation='vertical', spacing=10, padding=10)
+        # Grid ENORME
+        self.grid_layout = BoxLayout(orientation='vertical', spacing=18, padding=5)
         
         for i in range(6):
-            row_layout = BoxLayout(orientation='horizontal', spacing=8, size_hint=(1, None), height=80)
+            row_layout = BoxLayout(orientation='horizontal', spacing=12, size_hint=(1, None), height=110)
             row = []
             for j in range(5):
                 lbl = Label(
                     text='',
-                    font_size='40sp',
+                    font_size='52sp',
                     color=(0, 0, 0, 1),
                     size_hint=(None, None),
-                    size=(75, 75),
+                    size=(105, 105),
                     bold=True
                 )
                 # Fundo branco com borda preta (espaços vazios visíveis)
@@ -207,11 +207,11 @@ class WordMastermindApp(App):
             self.letter_labels.append(row)
         
         grid_container.add_widget(self.grid_layout)
-        grid_container.add_widget(Widget(size_hint=(0.05, 1)))  # Margem direita
+        grid_container.add_widget(Widget(size_hint=(0.5, 1)))  # Margem direita GRANDE
         main_layout.add_widget(grid_container)
         
         # Keyboard - COMPACTO
-        keyboard_layout = BoxLayout(orientation='vertical', size_hint=(1, 0.12), spacing=2)
+        keyboard_layout = BoxLayout(orientation='vertical', size_hint=(1, 0.10), spacing=2)
         
         key_rows = [
             ENGLISH_ALPHABET[0:9],
@@ -250,7 +250,7 @@ class WordMastermindApp(App):
         reset_btn = Button(
             text='New Game',
             font_size='18sp',
-            size_hint=(1, 0.05),
+            size_hint=(1, 0.04),
             background_color=(0.2, 0.6, 1, 1),
             color=(1, 1, 1, 1),
             bold=True
