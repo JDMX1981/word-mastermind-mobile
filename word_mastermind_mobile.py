@@ -65,82 +65,83 @@ class WordMastermindApp(App):
         Window.clearcolor = (0.85, 0.92, 1, 1)  # Azul claro suave
         
         # Main layout
-        main_layout = BoxLayout(orientation='vertical', padding=5, spacing=3)
+        main_layout = BoxLayout(orientation='vertical', padding=8, spacing=5)
         
-        # Header: Título e Regras lado a lado para poupar espaço
-        header_layout = BoxLayout(orientation='horizontal', size_hint=(1, 0.12), spacing=10)
+        # Header: Título e Regras lado a lado - MAIS ESPAÇO
+        header_layout = BoxLayout(orientation='horizontal', size_hint=(1, 0.15), spacing=15)
         
         # Left side: Title + Instructions
-        left_layout = BoxLayout(orientation='vertical', size_hint=(0.35, 1))
+        left_layout = BoxLayout(orientation='vertical', size_hint=(0.4, 1), spacing=3)
         title = Label(
-            text='Word Mastermind',
-            font_size='20sp',
-            color=(0, 0, 0, 1),  # PRETO em vez de azul
+            text='Word\nMastermind',
+            font_size='22sp',
+            color=(0, 0, 0, 1),
             bold=True,
-            size_hint=(1, 0.5)
+            size_hint=(1, 0.7),
+            halign='center',
+            valign='middle'
         )
+        title.bind(size=title.setter('text_size'))
         left_layout.add_widget(title)
         
         instructions = Label(
-            text='Type a 5-letter word\nand press Enter',
+            text='Type 5-letter word',
             font_size='11sp',
-            color=(0, 0, 0, 1),  # PRETO em vez de azul
-            size_hint=(1, 0.5)
+            color=(0.3, 0.3, 0.3, 1),
+            size_hint=(1, 0.3)
         )
         left_layout.add_widget(instructions)
         header_layout.add_widget(left_layout)
         
-        # Right side: Rules (compactas)
+        # Right side: Rules - BEM ESPAÇADAS
         rules_text = (
             "Rules:\n"
-            "1. The word has 5 letters.\n"
-            "2. You have 6 attempts.\n"
-            "3. Color feedback:\n"
-            "  Green=Correct position\n"
-            "  Yellow=Wrong position\n"
-            "  Grey=Not in word"
+            "• 5 letters, 6 attempts\n"
+            "• Green = Correct spot\n"
+            "• Yellow = Wrong spot\n"
+            "• Grey = Not in word"
         )
         rules_label = Label(
             text=rules_text,
-            font_size='10sp',
+            font_size='11sp',
             color=(0, 0, 0, 1),
             halign='left',
-            valign='top',
-            text_size=(Window.width * 0.6, None),
-            size_hint=(0.65, 1)
+            valign='middle',
+            size_hint=(0.6, 1)
         )
+        rules_label.bind(size=rules_label.setter('text_size'))
         header_layout.add_widget(rules_label)
         
         main_layout.add_widget(header_layout)
         
-        # Input field (mais compacto)
-        input_layout = BoxLayout(size_hint=(1, 0.06), spacing=5)
+        # Input field - COMPACTO
+        input_layout = BoxLayout(size_hint=(1, 0.07), spacing=5)
         self.guess_input = TextInput(
-            hint_text='Enter 5-letter word',
+            hint_text='Enter word',
             multiline=False,
-            font_size='16sp',
-            size_hint=(0.7, 1)
+            font_size='18sp',
+            size_hint=(0.65, 1)
         )
         self.guess_input.bind(on_text_validate=self.submit_guess)
         input_layout.add_widget(self.guess_input)
         
-        submit_btn = Button(text='Submit', font_size='16sp', size_hint=(0.3, 1))
+        submit_btn = Button(text='Submit', font_size='18sp', size_hint=(0.35, 1), bold=True)
         submit_btn.bind(on_press=self.submit_guess)
         input_layout.add_widget(submit_btn)
         
         main_layout.add_widget(input_layout)
         
-        # Game grid (6 rows x 5 columns) - MAIOR para ver todas as 6 tentativas
-        self.grid_layout = GridLayout(cols=5, spacing=6, size_hint=(1, 0.5), padding=5)
+        # Game grid (6 rows x 5 columns) - MUITO MAIOR!
+        self.grid_layout = GridLayout(cols=5, spacing=8, size_hint=(1, 0.52), padding=10)
         for i in range(6):
             row = []
             for j in range(5):
                 lbl = Label(
                     text='',
-                    font_size='32sp',
+                    font_size='36sp',
                     color=(0, 0, 0, 1),
                     size_hint=(None, None),
-                    size=(60, 60),
+                    size=(70, 70),
                     bold=True
                 )
                 # Fundo branco com borda preta (espaços vazios visíveis)
@@ -162,8 +163,8 @@ class WordMastermindApp(App):
         
         main_layout.add_widget(self.grid_layout)
         
-        # Keyboard - com fundo branco e borda preta (mais compacto)
-        keyboard_layout = BoxLayout(orientation='vertical', size_hint=(1, 0.18), spacing=2)
+        # Keyboard - COMPACTO
+        keyboard_layout = BoxLayout(orientation='vertical', size_hint=(1, 0.14), spacing=2)
         
         key_rows = [
             ENGLISH_ALPHABET[0:9],
@@ -198,10 +199,10 @@ class WordMastermindApp(App):
         
         main_layout.add_widget(keyboard_layout)
         
-        # Reset button (mais compacto)
+        # Reset button - COMPACTO
         reset_btn = Button(
             text='New Game',
-            font_size='16sp',
+            font_size='18sp',
             size_hint=(1, 0.06),
             background_color=(0.2, 0.6, 1, 1),
             color=(1, 1, 1, 1),
@@ -379,3 +380,4 @@ class WordMastermindApp(App):
 
 if __name__ == '__main__':
     WordMastermindApp().run()
+S
