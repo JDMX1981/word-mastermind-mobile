@@ -73,15 +73,12 @@ class WordMastermindApp(App):
         # Left side: Title + Instructions
         left_layout = BoxLayout(orientation='vertical', size_hint=(0.4, 1), spacing=3)
         title = Label(
-            text='Word\nMastermind',
-            font_size='22sp',
+            text='Word Mastermind',
+            font_size='18sp',
             color=(0, 0, 0, 1),
             bold=True,
-            size_hint=(1, 0.7),
-            halign='center',
-            valign='middle'
+            size_hint=(1, 0.7)
         )
-        title.bind(size=title.setter('text_size'))
         left_layout.add_widget(title)
         
         instructions = Label(
@@ -96,20 +93,17 @@ class WordMastermindApp(App):
         # Right side: Rules - BEM ESPAÇADAS
         rules_text = (
             "Rules:\n"
-            "• 5 letters, 6 attempts\n"
-            "• Green = Correct spot\n"
-            "• Yellow = Wrong spot\n"
-            "• Grey = Not in word"
+            "5 letters, 6 tries\n"
+            "Green=Correct\n"
+            "Yellow=Wrong spot\n"
+            "Grey=Not in word"
         )
         rules_label = Label(
             text=rules_text,
-            font_size='11sp',
+            font_size='10sp',
             color=(0, 0, 0, 1),
-            halign='left',
-            valign='middle',
             size_hint=(0.6, 1)
         )
-        rules_label.bind(size=rules_label.setter('text_size'))
         header_layout.add_widget(rules_label)
         
         main_layout.add_widget(header_layout)
@@ -380,4 +374,3 @@ class WordMastermindApp(App):
 
 if __name__ == '__main__':
     WordMastermindApp().run()
-S
