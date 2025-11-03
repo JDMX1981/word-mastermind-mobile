@@ -169,12 +169,12 @@ class WordMastermindApp(App):
         
         main_layout.add_widget(input_layout)
         
-        # Espaço em cima - equilibrado
-        main_layout.add_widget(Widget(size_hint=(1, 0.12)))
+        # Espaço em cima - MUITO reduzido para subir grid
+        main_layout.add_widget(Widget(size_hint=(1, 0.08)))
         
         # Game grid - ENORME E CENTRADO!
-        grid_container = BoxLayout(orientation='horizontal', size_hint=(1, 0.60))
-        grid_container.add_widget(Widget(size_hint=(0.08, 1)))  # Margem esquerda PEQUENA
+        grid_container = BoxLayout(orientation='horizontal', size_hint=(1, 0.62))
+        grid_container.add_widget(Widget(size_hint=(0.15, 1)))  # Margem esquerda para centrar
         
         # Grid ENORME
         self.grid_layout = BoxLayout(orientation='vertical', spacing=18, padding=5)
@@ -210,11 +210,11 @@ class WordMastermindApp(App):
             self.letter_labels.append(row)
         
         grid_container.add_widget(self.grid_layout)
-        grid_container.add_widget(Widget(size_hint=(0.08, 1)))  # Margem direita PEQUENA
+        grid_container.add_widget(Widget(size_hint=(0.15, 1)))  # Margem direita para centrar
         main_layout.add_widget(grid_container)
         
-        # Espaço em baixo - equilibrado
-        main_layout.add_widget(Widget(size_hint=(1, 0.11)))
+        # Espaço em baixo - aumentado para equilibrar
+        main_layout.add_widget(Widget(size_hint=(1, 0.13)))
         
         # Keyboard - COMPACTO
         keyboard_layout = BoxLayout(orientation='vertical', size_hint=(1, 0.10), spacing=2)
